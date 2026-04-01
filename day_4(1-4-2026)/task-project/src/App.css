@@ -1,0 +1,157 @@
+.counter-container {
+  text-align: center;
+}
+
+.btn {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+
+.btn-increment {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.btn-decrement {
+  background-color: #f44336;
+  color: white;
+}
+
+.btn-reset {
+  background-color: #2196F3;
+  color: white;
+}
+
+.counter-display {
+  font-size: 24px;
+  margin: 20px 0;
+  color: #333;
+  font-weight: bold;
+}
+
+/* useState Basics Styles */
+.basics-container {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 30px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 15px;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.basics-container h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.section {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  border-left: 5px solid #ffd700;
+}
+
+.section h2 {
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #ffd700;
+}
+
+.section p {
+  font-size: 1rem;
+  margin: 10px 0;
+  line-height: 1.6;
+}
+
+.section strong {
+  color: #ffd700;
+  font-weight: 600;
+}
+
+.input-field {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+}
+
+.input-field:focus {
+  outline: none;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.btn-toggle {
+  background-color: #9c27b0;
+  color: white;
+}
+
+.btn-toggle:hover {
+  background-color: #7b1fa2;
+}
+
+.btn-info {
+  background-color: #00bcd4;
+  color: white;
+}
+
+.btn-info:hover {
+  background-color: #0097a7;
+}
+
+.btn-success {
+  background-color: #4caf50;
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #388e3c;
+}
+
+.btn-danger {
+  background-color: #f44336;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #d32f2f;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.section ul {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 15px 30px;
+  border-radius: 5px;
+  margin: 10px 0;
+}
+
+.section li {
+  color: #ffd700;
+  margin: 8px 0;
+  font-weight: 500;
+}
