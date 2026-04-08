@@ -1,0 +1,7 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+.propsData{
+  background-color: green;
+  color:white;
+  padding:20px;
+}
