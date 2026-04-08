@@ -1,5 +1,3 @@
-// useReducer Hook
-
 import React from "react";
 import { useReducer } from "react";
 

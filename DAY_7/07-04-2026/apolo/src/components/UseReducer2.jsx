@@ -1,23 +1,28 @@
-// useReducer Hook
-
 import React from "react";
 import { useReducer } from "react";
 
-const UseReducer2 = () => {
+const UseReducer1 = () => {
   // const [state , dispatch] = useReducer(reducer , initialState)
 
   let initialState = {
-    count : 0
+    choco: 0,
+    icecream: 10,
   };
 
-  const counterReducer = (state , action) => {
+  const counterReducer = (state, action) => {
     switch (action.type) {
-      case "INCREMENT":
-        return {count : state.count + 1}
-      case "DECREMENT":
-        return {count: state.count - 1};
-      case "RESET":
-        return initialState;
+      case "INCREMENT_CHOCO":
+        return {...state ,  choco: state.choco + 1 };
+      case "DECREMENT_CHOCO":
+        return {...state ,  choco: state.choco - 1 };
+      case "RESET_CHOCO":
+        return {...state , choco : 0};
+      case "INCREMENT_ICE":
+        return {...state ,  icecream: state.icecream + 1 };
+      case "DECREMENT_ICE":
+        return {...state ,  icecream: state.icecream - 1 };
+      case "RESET_ICE":
+        return {...state , icecream : 10};
       default:
         return state;
     }
@@ -30,12 +35,16 @@ const UseReducer2 = () => {
   return (
     <>
       <div>UseReducer</div>
-      <div>count : {state.count}</div>
-      <button onClick={() => disptch({ type: "INCREMENT" })}>Increment</button>
-      <button onClick={() => disptch({ type: "DECREMENT" })}>Decrement</button>
-      <button onClick={() => disptch({ type: "RESET" })}>Reset</button>
+      <div>choco : {state.choco}</div>
+      <div>icecream : {state.icecream}</div>
+      <button onClick={() => disptch({ type: "INCREMENT_CHOCO" })}>Increment_choco</button>
+      <button onClick={() => disptch({ type: "DECREMENT_CHOCO" })}>Decrement_choco</button>
+      <button onClick={() => disptch({ type: "RESET_CHOCO" })}>Reset_choco</button><br></br>
+      <button onClick={() => disptch({ type: "INCREMENT_ICE" })}>Increment_ice</button>
+      <button onClick={() => disptch({ type: "DECREMENT_ICE" })}>Decrement_ice</button>
+      <button onClick={() => disptch({ type: "RESET_ICE" })}>Reset_ice</button>
     </>
   );
 };
 
-export default UseReducer2;
+export default UseReducer1;
