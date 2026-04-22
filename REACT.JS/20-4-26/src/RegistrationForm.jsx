@@ -1,41 +1,30 @@
-import React, { useState } from 'react';
-import './index.css';
+import React, { useState } from "react";
+import "./index.css";
 
-interface FormData {
-  name: string;
-  email: string;
-  password: string;
-  gender: string;
-  country: string;
-  termsAccepted: boolean;
-}
-
-export const RegistrationForm: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({
-    name: '',
-    email: '',
-    password: '',
-    gender: '',
-    country: '',
+export const RegistrationForm = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    gender: "",
+    country: "",
     termsAccepted: false,
   });
 
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState({});
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e) => {
     const { name, value, type } = e.target;
-    const checked = type === 'checkbox' ? (e.target as HTMLInputElement).checked : undefined;
-    
-    setFormData(prev => ({
+    const checked = type === "checkbox" ? e.target.checked : undefined;
+
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     }));
 
     // Jyare user type kare tyare error remove karva mate
     if (errors[name]) {
-      setErrors(prev => {
+      setErrors((prev) => {
         const newErrors = { ...prev };
         delete newErrors[name];
         return newErrors;
@@ -44,33 +33,34 @@ export const RegistrationForm: React.FC = () => {
   };
 
   const validate = () => {
-    const newErrors: Record<string, string> = {};
-    if (!formData.name.trim()) newErrors.name = 'Name is required';
+    const newErrors = {};
+    if (!formData.name.trim()) newErrors.name = "Name is required";
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
+      newErrors.email = "Email is required";
     } else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(formData.email)) {
-      newErrors.email = 'Invalid email format';
+      newErrors.email = "Invalid email format";
     }
     if (!formData.password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = "Password is required";
     } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+      newErrors.password = "Password must be at least 6 characters";
     }
-    if (!formData.gender) newErrors.gender = 'Select a gender';
-    if (!formData.country) newErrors.country = 'Select a country';
-    if (!formData.termsAccepted) newErrors.termsAccepted = 'You must accept the terms';
-    
+    if (!formData.gender) newErrors.gender = "Select a gender";
+    if (!formData.country) newErrors.country = "Select a country";
+    if (!formData.termsAccepted)
+      newErrors.termsAccepted = "You must accept the terms";
+
     return newErrors;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const validationErrors = validate();
     setErrors(validationErrors);
-    
+
     if (Object.keys(validationErrors).length === 0) {
-      console.log('Form Submitted:', formData);
-      alert('Registration Successful!');
+      console.log("Form Submitted:", formData);
+      alert("Registration Successful!");
     }
   };
 
@@ -91,7 +81,7 @@ export const RegistrationForm: React.FC = () => {
               placeholder="John Doe"
               value={formData.name}
               onChange={handleChange}
-              className={errors.name ? 'input-error' : ''}
+              className={errors.name ? "input-error" : ""}
             />
             {errors.name && <span className="error-text">{errors.name}</span>}
           </div>
@@ -106,7 +96,7 @@ export const RegistrationForm: React.FC = () => {
               placeholder="john@example.com"
               value={formData.email}
               onChange={handleChange}
-              className={errors.email ? 'input-error' : ''}
+              className={errors.email ? "input-error" : ""}
             />
             {errors.email && <span className="error-text">{errors.email}</span>}
           </div>
@@ -121,9 +111,11 @@ export const RegistrationForm: React.FC = () => {
               placeholder="••••••••"
               value={formData.password}
               onChange={handleChange}
-              className={errors.password ? 'input-error' : ''}
+              className={errors.password ? "input-error" : ""}
             />
-            {errors.password && <span className="error-text">{errors.password}</span>}
+            {errors.password && (
+              <span className="error-text">{errors.password}</span>
+            )}
           </div>
 
           {/* Gender & Country */}
@@ -136,7 +128,7 @@ export const RegistrationForm: React.FC = () => {
                     type="radio"
                     name="gender"
                     value="male"
-                    checked={formData.gender === 'male'}
+                    checked={formData.gender === "male"}
                     onChange={handleChange}
                   />
                   <span>Male</span>
@@ -146,13 +138,15 @@ export const RegistrationForm: React.FC = () => {
                     type="radio"
                     name="gender"
                     value="female"
-                    checked={formData.gender === 'female'}
+                    checked={formData.gender === "female"}
                     onChange={handleChange}
                   />
                   <span>Female</span>
                 </label>
               </div>
-              {errors.gender && <span className="error-text">{errors.gender}</span>}
+              {errors.gender && (
+                <span className="error-text">{errors.gender}</span>
+              )}
             </div>
 
             <div className="form-group half">
@@ -162,14 +156,18 @@ export const RegistrationForm: React.FC = () => {
                 name="country"
                 value={formData.country}
                 onChange={handleChange}
-                className={errors.country ? 'input-error' : ''}
+                className={errors.country ? "input-error" : ""}
               >
-                <option value="" disabled>Select</option>
+                <option value="" disabled>
+                  Select
+                </option>
                 <option value="in">India</option>
                 <option value="us">USA</option>
                 <option value="uk">UK</option>
               </select>
-              {errors.country && <span className="error-text">{errors.country}</span>}
+              {errors.country && (
+                <span className="error-text">{errors.country}</span>
+              )}
             </div>
           </div>
 
@@ -184,7 +182,9 @@ export const RegistrationForm: React.FC = () => {
               />
               <span className="checkbox-text">I agree to the Terms</span>
             </label>
-            {errors.termsAccepted && <span className="error-text">{errors.termsAccepted}</span>}
+            {errors.termsAccepted && (
+              <span className="error-text">{errors.termsAccepted}</span>
+            )}
           </div>
 
           <button type="submit" className="btn btn-primary submit-btn">
