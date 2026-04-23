@@ -12,6 +12,7 @@ export const RegistrationForm = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [submissions, setSubmissions] = useState([]);
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -59,8 +60,17 @@ export const RegistrationForm = () => {
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
+      setSubmissions((prev) => [...prev, formData]);
       console.log("Form Submitted:", formData);
       alert("Registration Successful!");
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+        gender: "",
+        country: "",
+        termsAccepted: false,
+      });
     }
   };
 
@@ -192,6 +202,45 @@ export const RegistrationForm = () => {
           </button>
         </form>
       </div>
+
+      {/* Submissions Table */}
+      {submissions.length > 0 && (
+        <div className="table-container">
+          <h2 className="table-title">📋 Submitted Registrations</h2>
+          <table className="submissions-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>Gender</th>
+                <th>Country</th>
+              </tr>
+            </thead>
+            <tbody>
+              {submissions.map((submission, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{submission.name}</td>
+                  <td>{submission.email}</td>
+                  <td>
+                    <span className="password-mask">••••••</span>
+                  </td>
+                  <td>
+                    <span className="badge">{submission.gender}</span>
+                  </td>
+                  <td>
+                    <span className="badge badge-secondary">
+                      {submission.country.toUpperCase()}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };

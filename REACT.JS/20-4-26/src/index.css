@@ -1,10 +1,10 @@
 /* Simple & Clean CSS Version */
 
 :root {
-  --bg-color: #f4f7f6;        
-  --text-main: #333333;      
-  --text-muted: #666666;     
-  --accent: #4f46e5;         
+  --bg-color: #f4f7f6;
+  --text-main: #333333;
+  --text-muted: #666666;
+  --accent: #4f46e5;
   --white: #ffffff;
   --border-color: #dddddd;
 }
@@ -16,7 +16,7 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: var(--bg-color);
   color: var(--text-main);
   line-height: 1.6;
@@ -121,7 +121,7 @@ body {
   border-radius: 12px;
   width: 100%;
   max-width: 500px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Simple shadow */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Simple shadow */
 }
 
 .form-title {
@@ -157,8 +157,7 @@ body {
   display: block;
 }
 
-
-.form-group input, 
+.form-group input,
 .form-group select {
   padding: 10px;
   border: 1px solid var(--border-color);
@@ -188,7 +187,174 @@ body {
 
 /* Responsive (Mobile) */
 @media (max-width: 768px) {
-  .hero-title { font-size: 32px; }
-  .nav-links { display: none; }
-  .form-card { padding: 20px; }
+  .hero-title {
+    font-size: 32px;
+  }
+  .nav-links {
+    display: none;
+  }
+  .form-card {
+    padding: 20px;
+  }
+}
+
+/* Table Container */
+.table-container {
+  background: var(--white);
+  padding: 40px;
+  border-radius: 12px;
+  margin-top: 40px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+}
+
+.table-title {
+  font-size: 24px;
+  margin-bottom: 25px;
+  color: var(--text-main);
+  text-align: center;
+}
+
+.submissions-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.submissions-table thead {
+  background-color: #f0f0f0;
+}
+
+.submissions-table th {
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-main);
+  border-bottom: 2px solid var(--border-color);
+}
+
+.submissions-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-muted);
+}
+
+.submissions-table tbody tr:hover {
+  background-color: #f9f9f9;
+  transition: background-color 0.2s;
+}
+
+.submissions-table tbody tr {
+  transition: background-color 0.2s;
+}
+
+.submissions-table tbody tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.submissions-table tr:last-child td {
+  border-bottom: none;
+}
+
+.password-mask {
+  font-weight: bold;
+  color: var(--accent);
+  letter-spacing: 2px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 5px 12px;
+  background-color: var(--accent);
+  color: white;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.badge-secondary {
+  background-color: #6b7280;
+}
+
+.form-subtitle {
+  text-align: center;
+  color: var(--text-muted);
+  margin-bottom: 30px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.form-group.half {
+  margin: 0;
+}
+
+.radio-group {
+  display: flex;
+  gap: 15px;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.radio-label input {
+  cursor: pointer;
+  width: auto;
+}
+
+.checkbox-group {
+  margin-top: 10px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.checkbox-label input {
+  cursor: pointer;
+  width: auto;
+}
+
+.checkbox-text {
+  font-weight: 500;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px !important;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.submit-btn:hover {
+  background-color: #3730a3 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+  .table-container {
+    padding: 20px;
+  }
+
+  .submissions-table th,
+  .submissions-table td {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
 }
