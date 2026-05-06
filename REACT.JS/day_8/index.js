@@ -5,8 +5,6 @@ const createStore = redux.createStore
 const BUY_ITEM = "BUY_ITEM"
 const BUY_ICE_CREAME = "BUY_ICE_CREAME"
 
-
-
 function buy_item(){
   return{
     type:BUY_ITEM
@@ -19,13 +17,10 @@ function buy_ice(){
   }
 }
 
-
-
 const initialState = {
   item:10,
   ice_cream:20
 };
-
 
 
 const ItemReducer = (state = initialState , action) => {
@@ -43,17 +38,9 @@ const ItemReducer = (state = initialState , action) => {
 
 const store = createStore(ItemReducer)
 
-
 console.log("initialState" , store.getState());
 
 store.subscribe(() => console.log("Updated state" , store.getState()))
 
-
 store.dispatch(buy_ice())
 store.dispatch(buy_ice())
-store.dispatch(buy_item())
-
-
-
-
-
