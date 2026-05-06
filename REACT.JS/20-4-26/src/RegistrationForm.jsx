@@ -1,18 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useId, useEffect } from "react";
 import "./index.css";
 
-export const RegistrationForm = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    gender: "",
-    country: "",
-    termsAccepted: false,
-  });
+// Constants
+const INITIAL_FORM_STATE = {
+  name: "",
+  email: "",
+  password: "",
+  gender: "",
+  country: "",
+  termsAccepted: false,
+};
 
+const COUNTRIES = [
+  { value: "in", label: "India" },
+  { value: "us", label: "USA" },
+  { value: "uk", label: "UK" },
+];
+
+const PASSWORD_MIN_LENGTH = 8;
+const STORAGE_KEY = "registrationSubmissions";
+
+export const RegistrationForm = () => {
+  const [formData, setFormData] = useState(INITIAL_FORM_STATE);
   const [errors, setErrors] = useState({});
   const [submissions, setSubmissions] = useState([]);
+  const [successMessage, setSuccessMessage] = useState("");
+  const formId = useId();
+
+  // Load submissions from localStorage on component mount
+  useEffect(() => {
+    try {
+      const storedSubmissions = localStorage.getItem(STORAGE_KEY);
+      if (storedSubmissions) {
+        setSubmissions(JSON.parse(storedSubmissions));
+      }
+    } catch (error) {
+      console.warn("Failed to load submissions from localStorage:", error);
+    }
+  }, []);
+
+  // Save submissions to localStorage whenever they change
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(submissions));
+    } catch (error) {
+      console.warn("Failed to save submissions to localStorage:", error);
+    }
+  }, [submissions]);
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -23,7 +57,7 @@ export const RegistrationForm = () => {
       [name]: type === "checkbox" ? checked : value,
     }));
 
-    // Jyare user type kare tyare error remove karva mate
+    // Clear error for this field when user starts editing
     if (errors[name]) {
       setErrors((prev) => {
         const newErrors = { ...prev };
@@ -33,23 +67,53 @@ export const RegistrationForm = () => {
     }
   };
 
+  const validateEmail = (email) => {
+    return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+  };
+
+  const validatePassword = (password) => {
+    // At least 8 characters, 1 uppercase, 1 lowercase, 1 number
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    return (
+      password.length >= PASSWORD_MIN_LENGTH &&
+      hasUpperCase &&
+      hasLowerCase &&
+      hasNumber
+    );
+  };
+
   const validate = () => {
     const newErrors = {};
-    if (!formData.name.trim()) newErrors.name = "Name is required";
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
-    } else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(formData.email)) {
+    } else if (!validateEmail(formData.email)) {
       newErrors.email = "Invalid email format";
     }
+
     if (!formData.password) {
       newErrors.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+    } else if (!validatePassword(formData.password)) {
+      newErrors.password = `Password must be at least ${PASSWORD_MIN_LENGTH} characters with uppercase, lowercase, and numbers`;
     }
-    if (!formData.gender) newErrors.gender = "Select a gender";
-    if (!formData.country) newErrors.country = "Select a country";
-    if (!formData.termsAccepted)
+
+    if (!formData.gender) {
+      newErrors.gender = "Select a gender";
+    }
+
+    if (!formData.country) {
+      newErrors.country = "Select a country";
+    }
+
+    if (!formData.termsAccepted) {
       newErrors.termsAccepted = "You must accept the terms";
+    }
 
     return newErrors;
   };
@@ -60,17 +124,26 @@ export const RegistrationForm = () => {
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
-      setSubmissions((prev) => [...prev, formData]);
-      console.log("Form Submitted:", formData);
-      alert("Registration Successful!");
-      setFormData({
-        name: "",
-        email: "",
-        password: "",
-        gender: "",
-        country: "",
-        termsAccepted: false,
-      });
+      const newSubmission = { ...formData, id: Date.now() };
+      setSubmissions((prev) => [...prev, newSubmission]);
+      setSuccessMessage(
+        "Registration successful! Your account has been created.",
+      );
+      setFormData(INITIAL_FORM_STATE);
+
+      // Clear success message after 5 seconds
+      setTimeout(() => setSuccessMessage(""), 5000);
+    }
+  };
+
+  const handleClearSubmissions = () => {
+    if (
+      window.confirm(
+        "Are you sure you want to delete all submissions? This cannot be undone.",
+      )
+    ) {
+      setSubmissions([]);
+      localStorage.removeItem(STORAGE_KEY);
     }
   };
 
@@ -80,103 +153,148 @@ export const RegistrationForm = () => {
         <h2 className="form-title">Create an Account</h2>
         <p className="form-subtitle">Join us and start your journey today.</p>
 
-        <form onSubmit={handleSubmit} className="registration-form">
+        {successMessage && (
+          <div className="success-message" role="status" aria-live="polite">
+            ✓ {successMessage}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="registration-form" id={formId}>
           {/* Name */}
           <div className="form-group">
-            <label htmlFor="name">Full Name</label>
+            <label htmlFor={`${formId}-name`}>Full Name</label>
             <input
               type="text"
-              id="name"
+              id={`${formId}-name`}
               name="name"
               placeholder="John Doe"
               value={formData.name}
               onChange={handleChange}
               className={errors.name ? "input-error" : ""}
+              aria-invalid={!!errors.name}
+              aria-describedby={
+                errors.name ? `${formId}-name-error` : undefined
+              }
             />
-            {errors.name && <span className="error-text">{errors.name}</span>}
+            {errors.name && (
+              <span className="error-text" id={`${formId}-name-error`}>
+                {errors.name}
+              </span>
+            )}
           </div>
 
           {/* Email */}
           <div className="form-group">
-            <label htmlFor="email">Email Address</label>
+            <label htmlFor={`${formId}-email`}>Email Address</label>
             <input
               type="email"
-              id="email"
+              id={`${formId}-email`}
               name="email"
               placeholder="john@example.com"
               value={formData.email}
               onChange={handleChange}
               className={errors.email ? "input-error" : ""}
+              aria-invalid={!!errors.email}
+              aria-describedby={
+                errors.email ? `${formId}-email-error` : undefined
+              }
             />
-            {errors.email && <span className="error-text">{errors.email}</span>}
+            {errors.email && (
+              <span className="error-text" id={`${formId}-email-error`}>
+                {errors.email}
+              </span>
+            )}
           </div>
 
           {/* Password */}
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlFor={`${formId}-password`}>Password</label>
             <input
               type="password"
-              id="password"
+              id={`${formId}-password`}
               name="password"
               placeholder="••••••••"
               value={formData.password}
               onChange={handleChange}
               className={errors.password ? "input-error" : ""}
+              aria-invalid={!!errors.password}
+              aria-describedby={
+                errors.password
+                  ? `${formId}-password-error`
+                  : `${formId}-password-hint`
+              }
             />
+            <small id={`${formId}-password-hint`} className="password-hint">
+              At least 8 characters with uppercase, lowercase, and numbers
+            </small>
             {errors.password && (
-              <span className="error-text">{errors.password}</span>
+              <span className="error-text" id={`${formId}-password-error`}>
+                {errors.password}
+              </span>
             )}
           </div>
 
           {/* Gender & Country */}
           <div className="form-row">
             <div className="form-group half">
-              <label>Gender</label>
-              <div className="radio-group">
-                <label className="radio-label">
-                  <input
-                    type="radio"
-                    name="gender"
-                    value="male"
-                    checked={formData.gender === "male"}
-                    onChange={handleChange}
-                  />
-                  <span>Male</span>
-                </label>
-                <label className="radio-label">
-                  <input
-                    type="radio"
-                    name="gender"
-                    value="female"
-                    checked={formData.gender === "female"}
-                    onChange={handleChange}
-                  />
-                  <span>Female</span>
-                </label>
-              </div>
+              <fieldset>
+                <legend>Gender</legend>
+                <div className="radio-group">
+                  <label className="radio-label">
+                    <input
+                      type="radio"
+                      name="gender"
+                      value="male"
+                      checked={formData.gender === "male"}
+                      onChange={handleChange}
+                      aria-invalid={!!errors.gender}
+                    />
+                    <span>Male</span>
+                  </label>
+                  <label className="radio-label">
+                    <input
+                      type="radio"
+                      name="gender"
+                      value="female"
+                      checked={formData.gender === "female"}
+                      onChange={handleChange}
+                      aria-invalid={!!errors.gender}
+                    />
+                    <span>Female</span>
+                  </label>
+                </div>
+              </fieldset>
               {errors.gender && (
                 <span className="error-text">{errors.gender}</span>
               )}
             </div>
 
             <div className="form-group half">
-              <label htmlFor="country">Country</label>
+              <label htmlFor={`${formId}-country`}>Country</label>
               <select
-                id="country"
+                id={`${formId}-country`}
                 name="country"
                 value={formData.country}
                 onChange={handleChange}
                 className={errors.country ? "input-error" : ""}
+                aria-invalid={!!errors.country}
+                aria-describedby={
+                  errors.country ? `${formId}-country-error` : undefined
+                }
               >
                 <option value="" disabled>
-                  Select
+                  Select a country
                 </option>
-                <option value="in">India</option>
-                <option value="us">USA</option>
-                <option value="uk">UK</option>
+                {COUNTRIES.map((country) => (
+                  <option key={country.value} value={country.value}>
+                    {country.label}
+                  </option>
+                ))}
               </select>
               {errors.country && (
-                <span className="error-text">{errors.country}</span>
+                <span className="error-text" id={`${formId}-country-error`}>
+                  {errors.country}
+                </span>
               )}
             </div>
           </div>
@@ -189,11 +307,19 @@ export const RegistrationForm = () => {
                 name="termsAccepted"
                 checked={formData.termsAccepted}
                 onChange={handleChange}
+                aria-invalid={!!errors.termsAccepted}
+                aria-describedby={
+                  errors.termsAccepted ? `${formId}-terms-error` : undefined
+                }
               />
-              <span className="checkbox-text">I agree to the Terms</span>
+              <span className="checkbox-text">
+                I agree to the Terms and Conditions
+              </span>
             </label>
             {errors.termsAccepted && (
-              <span className="error-text">{errors.termsAccepted}</span>
+              <span className="error-text" id={`${formId}-terms-error`}>
+                {errors.termsAccepted}
+              </span>
             )}
           </div>
 
@@ -206,39 +332,46 @@ export const RegistrationForm = () => {
       {/* Submissions Table */}
       {submissions.length > 0 && (
         <div className="table-container">
-          <h2 className="table-title">📋 Submitted Registrations</h2>
-          <table className="submissions-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Password</th>
-                <th>Gender</th>
-                <th>Country</th>
-              </tr>
-            </thead>
-            <tbody>
-              {submissions.map((submission, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{submission.name}</td>
-                  <td>{submission.email}</td>
-                  <td>
-                    <span className="password-mask">••••••</span>
-                  </td>
-                  <td>
-                    <span className="badge">{submission.gender}</span>
-                  </td>
-                  <td>
-                    <span className="badge badge-secondary">
-                      {submission.country.toUpperCase()}
-                    </span>
-                  </td>
+          <div className="table-header">
+            <h2 className="table-title">📋 Submitted Registrations</h2>
+            <button
+              type="button"
+              onClick={handleClearSubmissions}
+              className="btn btn-danger clear-btn"
+            >
+              Clear All
+            </button>
+          </div>
+          <div className="table-responsive">
+            <table className="submissions-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Gender</th>
+                  <th>Country</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {submissions.map((submission, index) => (
+                  <tr key={submission.id}>
+                    <td>{index + 1}</td>
+                    <td>{submission.name}</td>
+                    <td>{submission.email}</td>
+                    <td>
+                      <span className="badge">{submission.gender}</span>
+                    </td>
+                    <td>
+                      <span className="badge badge-secondary">
+                        {submission.country.toUpperCase()}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>
