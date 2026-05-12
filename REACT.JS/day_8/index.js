@@ -23,7 +23,7 @@ const initialState = {
 };
 
 
-const ItemReducer = (state = initialState , action) => {
+const ItemReducer = (state = initialState , action) =>{
   switch(action.type){
     case BUY_ITEM:return{
       ...state , item:state.item + 1
