@@ -9,7 +9,7 @@ import { Image3 } from "./Images";
 
 const Layout = () => {
   return (
-    <div className="flex">
+    <div className="flex justify-center gap-6 p-4">
       {/* <Card img={image1}/>
       <Card img={image2}/>
       <Card img={image3}/> */}
