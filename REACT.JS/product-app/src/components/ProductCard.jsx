@@ -1,10 +1,11 @@
 import React from "react";
 import { addToCart } from "../features/cart/cartSlice";
+import { addTowishlist } from "../features/cart/wishslice";
 import { useDispatch } from "react-redux";
 
-const ProductCard = ({productData}) => {
+const ProductCard = ({ productData }) => {
 
-  console.log("productData" , productData);
+  console.log("productData", productData);
 
   const dispatch = useDispatch()
 
@@ -13,7 +14,7 @@ const ProductCard = ({productData}) => {
       {productData.map((item) => {
         return (
           <div
-            className=" w-[300px] bg-neutral-primary-soft p-2 border border-default rounded-base shadow-xs"
+            className=" w-[300px] bg-neutral-primary-soft p-2 border border-default rounded-base shadow-xs relative"
             key={item.id}
           >
             <a href="#">
@@ -22,6 +23,11 @@ const ProductCard = ({productData}) => {
                 src={item.images[0]}
                 alt="product image"
               />
+              <div className="absolute top-6 right-6">
+                <button onClick={() => dispatch(addTowishlist(item))}>
+                  <i className="fa-regular fa-heart text-xl" />
+                </button>
+              </div>
             </a>
             <div>
               <div className="flex items-center space-x-3 mb-6">

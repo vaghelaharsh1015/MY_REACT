@@ -6,6 +6,7 @@ import Cart from "./Cart";
 import Error from "./Error";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import WishlistData from "./Wishlist";
 import { BrowserRouter as Router , Routes , Route } from "react-router-dom";
 
 
@@ -19,6 +20,7 @@ const Layout = () => {
         <Route path="/login" element={<Login/>}/>
         <Route path="/register" element={<Register/>}/>
         <Route path="/cart" element={<Cart/>}/>
+        <Route path="/wishlist" element={<WishlistData/>}/>
         <Route path="*" element={<Error/>}/>
       </Routes>
       <Footer/>

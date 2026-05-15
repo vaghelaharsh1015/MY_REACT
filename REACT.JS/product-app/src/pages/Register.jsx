@@ -1,9 +1,16 @@
 import React from 'react'
 
-const Register = () => {
+const wishlist = () => {
+
+  const wishlistData = useSelector((state) => state.cart.cartItem)
+
+  console.log("wishlistData", wishlistData)
+
   return (
-    <div>Register</div>
+    <>
+      <div>wishlist</div>
+      <ProductCard productData={wishlistData} />
+    </>
   )
 }
-
-export default Register
+export default wishlist
