@@ -1,6 +1,7 @@
 import React from "react";
 
 const Card = ({children}) => {
+const Card = ({ children, title = "Streamlining your design process today.", description = "In today’s fast-paced digital landscape, fostering seamless collaboration among Developers and IT Operations." }) => {
   return (
     <>
       <div className="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs">
@@ -12,11 +13,13 @@ const Card = ({children}) => {
         <a href="#">
           <h5 className="mt-6 mb-2 text-2xl font-semibold tracking-tight text-heading">
             Streamlining your design process today.
+            {title}
           </h5>
         </a>
         <p className="mb-6 text-body">
           In today’s fast-paced digital landscape, fostering seamless
           collaboration among Developers and IT Operations.
+          {description}
         </p>
         <a
           href="#"

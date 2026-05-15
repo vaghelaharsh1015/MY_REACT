@@ -1,17 +1,29 @@
 import React from "react";
 import { addToCart } from "../features/cart/cartSlice";
-import { addTowishlist } from "../features/cart/wishslice";
-import { useDispatch } from "react-redux";
+import { addTowishlist, removewishlis } from "../features/cart/wishslice"; 
+import { useDispatch, useSelector } from "react-redux";
 
 const ProductCard = ({ productData }) => {
 
   console.log("productData", productData);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const wishlistItems = useSelector((state) => state.wishlist.wishlist);
 
   return (
     <div className="flex flex-wrap gap-4">
       {productData.map((item) => {
+        const isFavorite = wishlistItems.some((wishItem) => wishItem.id === item.id);
+
+        const handleWishlistClick = (e) => {
+          e.preventDefault(); 
+          if (isFavorite) {
+            dispatch(removewishlis(item.id));
+          } else {
+            dispatch(addTowishlist(item));
+          }
+        };
+
         return (
           <div
             className=" w-[300px] bg-neutral-primary-soft p-2 border border-default rounded-base shadow-xs relative"
@@ -23,9 +35,13 @@ const ProductCard = ({ productData }) => {
                 src={item.images[0]}
                 alt="product image"
               />
-              <div className="absolute top-6 right-6">
-                <button onClick={() => dispatch(addTowishlist(item))}>
-                  <i className="fa-regular fa-heart text-xl" />
+              <div className="absolute top-6 right-6 z-10">
+                <button type="button" onClick={handleWishlistClick}>
+                  <i 
+                    className={`${
+                      isFavorite ? "fa-solid fa-heart text-red-500" : "fa-regular fa-heart"
+                    } text-xl`} 
+                  />
                 </button>
               </div>
             </a>
