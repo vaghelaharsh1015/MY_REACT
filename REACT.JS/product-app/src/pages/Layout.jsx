@@ -10,10 +10,10 @@ import WishlistData from "./Wishlist";
 import { BrowserRouter as Router , Routes , Route } from "react-router-dom";
 
 
-const Layout = () => {
+const Layout = ({ user }) => {
   return (
     <Router>
-      <Navbar/>
+      <Navbar user={user}/>
       <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="/product" element={<Product/>}/>

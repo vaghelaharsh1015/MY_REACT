@@ -12,8 +12,8 @@ const ProductCard = ({ productData }) => {
 
   return (
     <div className="flex flex-wrap gap-4">
-      {productData.map((item) => {
-        const isFavorite = wishlistItems.some((wishItem) => wishItem.id === item.id);
+      {productData?.map((item) => {
+        const isFavorite = wishlistItems?.some((wishItem) => wishItem.id === item.id);
 
         const handleWishlistClick = (e) => {
           e.preventDefault(); 
