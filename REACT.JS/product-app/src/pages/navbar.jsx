@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Navbar({ user }) {
+function Navbar({ user }) { 
 
   const firstLetter = user ? user.name.charAt(0).toUpperCase() : '';
 
