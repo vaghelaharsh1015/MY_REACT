@@ -32,7 +32,7 @@ const ProductCard = ({ productData }) => {
             <a href="#">
               <img
                 className="rounded-base mb-6"
-                src={item.images[0]}
+                src={item.images[0]}  
                 alt="product image"
               />
               <div className="absolute top-6 right-6 z-10">
