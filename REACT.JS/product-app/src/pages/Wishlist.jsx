@@ -4,14 +4,14 @@ import ProductCard from '../components/ProductCard'
 
 const WishlistData = () => {
 
-    const WishlistData = useSelector((state) => state.wishlist.wishlist)  
+    const wishlistItems = useSelector((state) => state.wishlist.wishlist)  
   
-    console.log("WishlistData" , WishlistData)
+    console.log("wishlistItems" , wishlistItems)
   
     return (
       <>
       <div>WishlistData</div>
-      <ProductCard productData={WishlistData}/>
+      <ProductCard productData={wishlistItems}/>
       </>
     )
   }

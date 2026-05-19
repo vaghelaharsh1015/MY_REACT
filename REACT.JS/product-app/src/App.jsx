@@ -1,13 +1,29 @@
-import './App.css'
-import Layout from './pages/Layout'
+import React, { useState } from "react";
+import LoginModal from "./pages/loginmodel";
+import Layout from "./pages/Layout";
 
 function App() {
+  const [user, setUser] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(true);
+
+  const handleLoginSuccess = (userData) => {
+    setUser(userData);
+    setIsModalOpen(false); // Closes the modal on successful login
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    setIsModalOpen(true);
+  };
 
   return (
     <>
-      <Layout/>
+      {isModalOpen && !user && (
+        <LoginModal onLoginSuccess={handleLoginSuccess} />
+      )}
+      <Layout user={user} onLogout={handleLogout} />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

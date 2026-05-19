@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = ({ user, onLogout }) => {
   return (
     <nav className=" fixed w-full z-20 top-0 start-0 border-b border-default bg-gray-500">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 container">
@@ -70,22 +70,42 @@ const Navbar = () => {
                 Cart
               </NavLink>
             </li>
-            <li>
-              <NavLink
-                to="/login"
-                className="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent"
-              >
-                SignIn
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/register"
-                className="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent"
-              >
-                SignUp
-              </NavLink>
-            </li>
+            {!user ? (
+              <>
+                <li>
+                  <NavLink
+                    to="/login"
+                    className="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent"
+                  >
+                    SignIn
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/register"
+                    className="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent"
+                  >
+                    SignUp
+                  </NavLink>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <span className="block py-2 px-3 text-white font-bold bg-blue-500 rounded md:bg-transparent md:text-blue-300 md:p-0">
+                    Hi, {user.name}
+                  </span>
+                </li>
+                <li>
+                  <button
+                    onClick={onLogout}
+                    className="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-red-500 md:p-0 md:dark:hover:bg-transparent font-semibold"
+                  >
+                    SignOut
+                  </button>
+                </li>
+              </>
+            )}
             <li>
               <NavLink
                 to="/wishlist"
